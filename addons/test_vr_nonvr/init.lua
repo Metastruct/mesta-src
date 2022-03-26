@@ -142,6 +142,7 @@ function floorbox(_x, _y, gray)
 end
 
 local moai
+local terrain
 
 function hook.draw.test()
 	graphics.setDepthTest('lequal', true) -- mirror() will have disabled this
@@ -159,7 +160,12 @@ function hook.draw.test()
 	end
 
 	graphics.setShader()
-	moai = moai or lovr.graphics.newModel('models/terrain/valley.gltf') -- TODO: moai
-	moai:draw(0, -10, 0, 0.5)
+	terrain = terrain or lovr.graphics.newModel('models/terrain/valley.gltf') -- TODO: moai
+	terrain:draw(0, -10, 0, 0.5)
+
+	moai = moai or lovr.graphics.newModel('models/props/mesta.gltf')
+	moai:draw(math.sin(lovr.timer.getTime()) * 5, 2, -10, 1)
+
+
 	graphics.print(os.date("%H:%M:%S"), 0, 4, -10, -.1, 3.14)
 end
