@@ -1,0 +1,2 @@
+lovr.filesystem.setRequirePath([[src/lovr/?.lua;src/lovr/lua/?.lua;src/lovr/libraries/?.lua;src/lovr/libraries/?/init.lua;launcher/?.lua;]] .. lovr.filesystem.getRequirePath())
+dofile("src/lovr/conf.lua")

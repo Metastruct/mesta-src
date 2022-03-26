@@ -1,0 +1,10 @@
+{
+    "[lua]": {
+        "editor.tabSize": 4
+    },
+    "Lua.workspace.library": [
+        "..\\lovr-docs\\api",
+        "${3rd}/lovr/library"
+    ],
+    "Lua.workspace.checkThirdParty": false,
+}

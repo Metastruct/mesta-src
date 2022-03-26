@@ -1,0 +1,29 @@
+{
+  
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(Windows) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "../lovr/lovr.exe",
+            "args": ["--console",".","--debug"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
+        }
+    ],
+    "todo":    {
+            "type": "lua-local",
+            "request": "launch",
+            "name": "Launch LOVR Debug",
+            "executable": "../lovr/lovr.exe",
+            "program": ".",
+            "args": ["--console",".","--debug"],
+            "cwd": "${workspaceFolder}",
+            "workingDirectory": "${workspaceRoot}",
+            "listenPublicly": false,
+            "listenPort": 56789
+        }
+}

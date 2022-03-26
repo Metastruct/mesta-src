@@ -1,0 +1,1 @@
+..\lovr\lovr.exe --console . launcher

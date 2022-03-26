@@ -1,0 +1,1 @@
+bin\when_changed.exe src\** win_lovr_on_autoreload.cmd
