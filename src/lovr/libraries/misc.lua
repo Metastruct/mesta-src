@@ -1,3 +1,7 @@
+
+local MISC = {}
+local exports=MISC
+
 inspect = require'inspect'
 log = require'log'
 
@@ -39,26 +43,21 @@ function ErrorNoHaltWithStack(...)
 end
 
 hook = require'hook'
-
 log.debug("OS", lovr.system.getOS(), "Cores", lovr.system.getCoreCount(), "Features", inspect(lovr.graphics.getFeatures()))
 local sql = require'sql'
+local ok, ret = xpcall(sql._init, debug.traceback)
 
-local ok,ret = xpcall(sql._init,debug.traceback)
 if not ok then
 	log.error(ret)
 end
 
-local MISC = {
-	ErrorNoHaltWithStack = ErrorNoHaltWithStack,
-	isstring = isstring,
-	isfunction = isfunction,
-	isnumber = isnumber,
-	isbool = isbool,
-	IsValid = IsValid
-}
-
-local exports=MISC
-
+exports.ErrorNoHaltWithStack = ErrorNoHaltWithStack
+exports.isstring = isstring
+exports.isfunction = isfunction
+exports.isnumber = isnumber
+exports.isbool = isbool
+exports.IsValid = IsValid
+local exports = MISC
 
 function exports.loadAddons()
 	for _, dir in pairs(lovr.filesystem.getDirectoryItems('addons')) do
@@ -77,5 +76,23 @@ function exports.loadExtensions()
 	end
 end
 
+
+do
+		
+	local stores = {}
+
+	function exports.getScriptStorage()
+		local id = debug.getinfo(2, 'Sl')
+		local t = stores[id.source]
+
+		if not t then
+			t = {}
+			stores[id.source] = t
+		end
+
+		return t
+	end
+
+end
 
 return exports

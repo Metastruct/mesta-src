@@ -3,9 +3,12 @@
 --
 -- Sample contributed by andi mcc
 local misc = require'misc'
+local state = misc.getScriptStorage()
+
 local log = require'log'
 local graphics = lovr.graphics
 local shader = require'shader'
+local phong = require'shaders.phong'()
 local font = graphics.newFont(36) -- Font appropriate for screen-space usage
 font:setFlipEnabled(true)
 font:setPixelDensity(1)
@@ -31,11 +34,13 @@ local fontscale = height / graphics.getHeight() -- Scale argument to screen-spac
 -- Screen-space coordinate system
 local matrix = lovr.math.newMat4():orthographic(-aspect, aspect, -1, 1, -64, 64)
 -- State: We will store the blocks to draw as a 2D array of heights (nil for no block)
-local grid = {}
+local grid = state.grid or {}
+state.grid = grid
 
 for x = 1, cells do
-	grid[x] = {}
+	grid[x] = grid[x] or {}
 end
+
 
 local clicksnd
 
@@ -62,6 +67,7 @@ function hook.mousepressed.test(x, y)
 		else
 			grid[fx][fy] = lovr.math.random()
 		end
+
 		clickSound()
 	end
 end
@@ -125,7 +131,7 @@ function hook.mirror.test(mirror)
 	-- Draw instructions
 	graphics.setColor(1, 1, 1, 1)
 	graphics.setFont(font)
-	graphics.print("Instructions: Click the grid to create or remove blocks.", 0, (gridheight + cellheight) / 2, 0, fontscale)
+	graphics.print("Click the grid to create or remove blocks.", 0, (gridheight + cellheight) / 2, 0, fontscale)
 end
 
 function floorbox(_x, _y, gray)
@@ -136,18 +142,11 @@ function floorbox(_x, _y, gray)
 end
 
 local moai
+
 function hook.draw.test()
 	graphics.setDepthTest('lequal', true) -- mirror() will have disabled this
 	graphics.setShader(shader)
 	graphics.setColor(1, 1, 1)
-
-	moai = moai or lovr.graphics.newModel('models/props/suzanne.obj') -- TODO: moai
-
-	lovr.graphics.setWireframe(true)
-	moai:draw(0, 1.7, -3, 1, lovr.timer.getTime() * .25)
-	lovr.graphics.setWireframe(false)
-
-
 
 	for x = 1, cells do
 		for y = 1, cells do
@@ -160,5 +159,7 @@ function hook.draw.test()
 	end
 
 	graphics.setShader()
-	graphics.print('Meta Construct?', 0, 1.7, -3, .2)
+	moai = moai or lovr.graphics.newModel('models/terrain/valley.gltf') -- TODO: moai
+	moai:draw(0, -10, 0, 0.5)
+	graphics.print(os.date("%H:%M:%S"), 0, 4, -10, -.1, 3.14)
 end

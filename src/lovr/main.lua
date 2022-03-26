@@ -1,11 +1,10 @@
-local misc = require'misc'
-local log = require'log'
+misc = require'misc'
+log = require'log'
 lovr.mouse = require'mouse'
-lovr.filesystem.mount("assets/", "/")
-
-local font = lovr.graphics.newFont(36)
-font:setFlipEnabled(true)
-font:setPixelDensity(1)
-
+lovr.filesystem.mount('assets/', '/')
+local reload=require'mestareloader'
+reload.hook()
+hook.update.mestareloader=reload.update
 misc.loadExtensions()
 misc.loadAddons()
+log.debug("Loaded")

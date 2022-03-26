@@ -23,10 +23,33 @@ You should have the following folder structure in the end:
      - sqlite3.dll
    - lovr-docs <- not required
 
+### Features
+ - Autoreload
+
+### Structure
+ - `addons/addon_name/init.lua` Addons folder for various additions, run code here, gets autoreloaded. May be shared between game engines?
+ - `assets/` mounted as asset folder so you can use `models/test.obj` directly.
+ - `src/lovr/extensions/` files shared between addons, autoloaded out of order
+ - `src/lovr/libraries/` shared lua modules (DLL files need to be copied to lovr.exe directory!!!)
+
+### Roadmap
+Minimal walkable demo with something boring in it while figuring out a sane architecture for metastructistic chaotic systemacy of making whatever
+
 ### TODO
- - To have a TODO
+ - Desktop mode!
+ - walking around in Desktop
+ - walking around in VR
+ - imgui integration
+ - packaged version with github actions
+ - To have a TODO/Roadmap
+ - gather more models
 
-
+### Things to check out / integrate
+ - https://github.com/facebookincubator/FBX2glTF
+ - https://github.com/mcclure/lovr-ent
+ - https://lovr.org/docs/v0.15.0/Intro/Hello_World
+ - https://valvesoftware.github.io/steam-audio/ (required anymore?)
+ 
 ### Vision
 
 To have a vision

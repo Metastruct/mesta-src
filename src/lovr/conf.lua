@@ -2,14 +2,15 @@ lovr.filesystem.setRequirePath([[src/lovr/?.lua;src/lovr/lua/?.lua;src/lovr/libr
 
 function lovr.conf(t)
 	local json = require'dkjson'
-	local conf = lovr.filesystem.read("config.json")
-	conf = conf and json.decode(conf) or {}
+	local confstring = lovr.filesystem.read('config.json')
+	local conf = confstring and json.decode(confstring) or {}
 
 	if conf.drivers then
 		t.headset.drivers = conf.drivers
 	end
 
-	t.identity = "mesta"
+	t.headset.drivers = {'desktop'}
+	t.identity = 'mesta'
 
 	if conf.headset ~= nil then
 		t.modules.headset = conf.headset
