@@ -8,6 +8,7 @@ local state = misc.getScriptStorage()
 local log = require'log'
 local graphics = lovr.graphics
 local shader = require'shader'
+local shader_diffuse = require'shader_diffuse'
 local phong = require'shaders.phong'()
 local font = graphics.newFont(36) -- Font appropriate for screen-space usage
 font:setFlipEnabled(true)
@@ -159,13 +160,13 @@ function hook.draw.test()
 		end
 	end
 
-	graphics.setShader()
+	graphics.setShader(shader_diffuse)
 	terrain = terrain or lovr.graphics.newModel('models/terrain/valley.gltf') -- TODO: moai
 	terrain:draw(0, -10, 0, 0.5)
 
 	moai = moai or lovr.graphics.newModel('models/props/mesta.gltf')
 	moai:draw(math.sin(lovr.timer.getTime()) * 5, 2, -10, 1)
 
-
+	graphics.setShader()
 	graphics.print(os.date("%H:%M:%S"), 0, 4, -10, -.1, 3.14)
 end
