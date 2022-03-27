@@ -51,6 +51,61 @@ local function clickSound()
 	clicksnd:play()
 end
 
+local NON_VR = not lovr.headset
+
+if not NON_VR then goto END_OF_NON_VR end
+function hook.load.nonvr()
+	lovr.mouse.setRelativeMode(true)
+
+	camera = {
+	  transform = lovr.math.newMat4(),
+	  position = lovr.math.newVec3(),
+	  movespeed = 10,
+	  pitch = 0,
+	  yaw = 0
+	}
+end
+
+function hook.update.nonvr(dt)
+	local velocity = vec4()
+
+	if lovr.keyboard.isDown('w', 'up') then
+	  velocity.z = -1
+	elseif lovr.keyboard.isDown('s', 'down') then
+	  velocity.z = 1
+	end
+
+	if lovr.keyboard.isDown('a', 'left') then
+	  velocity.x = -1
+	elseif lovr.keyboard.isDown('d', 'right') then
+	  velocity.x = 1
+	end
+
+	if #velocity > 0 then
+	  velocity:normalize()
+	  velocity:mul(camera.movespeed * dt)
+	  camera.position:add(camera.transform:mul(velocity).xyz)
+	end
+
+	camera.transform:identity()
+	camera.transform:translate(0, 1.7, 0)
+	camera.transform:translate(camera.position)
+	camera.transform:rotate(camera.yaw, 0, 1, 0)
+	camera.transform:rotate(camera.pitch, 1, 0, 0)
+end
+
+function hook.mousemoved.nonvr(x, y, dx, dy)
+	camera.pitch = camera.pitch - dy * .001
+	camera.yaw = camera.yaw - dx * .001
+end
+
+function hook.keypressed.nonvr(key)
+	if key == 'escape' then
+		lovr.event.quit()
+	end
+end
+::END_OF_NON_VR::
+
 function hook.mousepressed.test(x, y)
 	local inx = x * width / pixwidth - width / 2 -- Convert pixel x,y to our coordinate system
 	local iny = y * height / pixheight - height / 2
@@ -126,8 +181,14 @@ function hook.mirror.test(mirror)
 	graphics.setShader(nil)
 	graphics.setDepthTest(nil)
 	graphics.origin()
-	graphics.setViewPose(1, mat4())
-	graphics.setProjection(1, matrix) -- Switch to screen space coordinates
+
+	if NON_VR then
+		graphics.setViewPose(1, camera.transform)
+	else
+		graphics.setViewPose(1, mat4())
+		graphics.setProjection(1, matrix) -- Switch to screen space coordinates
+	end
+
 	drawGrid()
 	-- Draw instructions
 	graphics.setColor(1, 1, 1, 1)

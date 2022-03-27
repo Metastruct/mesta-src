@@ -42,3 +42,11 @@ function lovr.update(dt)
 
 	return hook.run_nointerrupt_nocb('update', dt)
 end
+
+function lovr.mousemoved(...)
+	return hook.run('mousemoved', ...)
+end
+
+function lovr.keypressed(...)
+	return hook.run('keypressed', ...)
+end
